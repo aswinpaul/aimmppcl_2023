@@ -1,4 +1,5 @@
-# aimmppcl2023
+# An Active Inference Mixed Model Integrating Predictive Planning and Counterfactual Learning 
+
 # Abstract
 
 Modelling and explaining the basis of intelligent behaviour is a crucial problem today, 
