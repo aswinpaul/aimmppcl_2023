@@ -1,0 +1,12 @@
+[workspace]
+restore_data_on_startup = True
+save_data_on_exit = True
+save_history = True
+save_non_project_files = False
+project_type = 'empty-project-type'
+recent_files = ['mutating_cartpole_trial/trial_dq.py', 'mutating_cartpole_trial/trial_random.py', 'mutating_cartpole_trial/plotting.py', 'mutating_cartpole_trial/trial_cl.py', 'mutating_cartpole_trial/plotting_parameters.py', 'cartpole_trial/data_dpefe/data_agg.py', 'cartpole_trial/plotting.py']
+
+[main]
+version = 0.2.0
+recent_files = []
+
