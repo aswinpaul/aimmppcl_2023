@@ -2,12 +2,16 @@
 import numpy as np
 
 m_trials = 99
-n_trials = 200
-data_dpefe = np.zeros((m_trials, n_trials))
+n_trials = 400
+data_dpefe = []
+
 for i in range(m_trials):
     file_name = 'data_dpefe_' + str(i) + '.npy'
-    with open(file_name, 'rb') as file:
-        data_dpefe[i,:] = np.load(file) 
-        
-with open('../data_dpefe_10.npy', 'wb') as file:
-    np.save(file, data_dpefe)
+    try:
+        with open(file_name, 'rb') as file:
+            data_dpefe.append(np.load(file))
+    except:
+        print("Not avail")
+         
+with open('../data_dpefe_20.npy', 'wb') as file:
+    np.save(file, np.array(data_dpefe))

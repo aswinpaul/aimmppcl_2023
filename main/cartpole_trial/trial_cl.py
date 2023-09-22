@@ -117,41 +117,46 @@ for mt in range(m_trials):
                  C = C,
                  D = D,
                  memory_horizon = N,
-                 action_precision = 1024,
+                 action_precision = 1,
                  gamma_initial = 0.55)
     
-    gamma_vec_list = []
+    a.lr_pB = 1000
+    a.lr_pA = 1
+    a.lr_pD = 1
     
     for trial in range(n_trials):
-        obs, info = env.reset(seed=mt)
+        
+        obs, info = env.reset(seed = mt)
         a.tau = 0
         score = 0
-        
+        gamma_vec_list = []
         
         for t in range(time_horizon):
             
             obs_list = state_to_obs(obs)
-            action = a.step(obs_list, learning=False)
+            action = a.step(obs_list, learning = True)
             
             obs, reward, terminated, truncated, info = env.step(int(action[0]))
             score += reward
             
+            #if(mt == 0 and trial == 67):
+                #frames.append(env.render())
+                
             # Learning
             if(terminated):
-                a.update_gamma(risk = 0.55)
+                a.Gamma[:] = 0.55
                 a.update_CL(t) #state-action mapping
                 
             if(score%100 == 0):
-                a.update_gamma(risk = -0.55)
+                a.update_gamma(risk = -0.2)
                 a.update_CL(t) #state-action mapping
                                             
             #Checking for succesful episode
             if terminated or truncated:
-                action  = a.step(obs_list, learning = False)
+                action  = a.step(obs_list, learning = True)
                 break
             
-
-            gamma_vec_list.append(np.mean(a.Gamma))
+            gamma_vec_list.append(a.Gamma[0][0])
             
         score_vec[mt,trial] = score
         gamma_vec[mt,trial] = np.array(gamma_vec_list).min()

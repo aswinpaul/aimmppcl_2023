@@ -19,18 +19,12 @@ with open('data_dynaq_10.npy', 'rb') as file:
 
 with open('data_cl.npy', 'rb') as file:
     data[2] = np.load(file)
-    
-# with open('data_si.npy', 'rb') as file:
-#     data[3] = np.load(file)
-    
-# with open('data_dpefe_5.npy', 'rb') as file:
-#     data[4] = np.load(file)
 
-# with open('data_dpefe_10.npy', 'rb') as file:
-#     data[5] = np.load(file)
+with open('data_dpefe_20.npy', 'rb') as file:
+    data[3] = np.load(file)
     
-agents = 3
-episodes = 400
+agents = 4
+episodes = 200
 
 sample = np.shape(data[0][:,0:episodes][0])[0]
 
@@ -48,12 +42,12 @@ for i in range(agents):
                      data_mean[i][:-1] - fact*data_std[i][:-1],
                      alpha=0.3)
 
-plt.legend(["Random agent", "Dyna-Q (N = 10)", "CL method (N = 5)"])
+plt.legend(["Random agent", "Dyna-Q (N = 10)", "CL method (N = 5)", "DPEFE (N = 20)"])
 
 plt.title("Cart Pole - v1 (OpenAI Gym)")
 
 plt.xlabel("Episode number")
-#plt.ylim(-10, 10)
+plt.ylim(0, None)
 plt.xlim(0, episodes)
 plt.ylabel("Total score")
 plt.savefig('perf_1.png', dpi=500, bbox_inches='tight');

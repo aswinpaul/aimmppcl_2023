@@ -28,7 +28,7 @@ num_actions = 2
 
 from agents.agent_dynaq import dynaq_agent as dqa
 
-episodes = 400
+episodes = 200
 seedloops = 100
 mem_replay = 10
 time_horizon = 15000
@@ -69,7 +69,7 @@ for sl in range(seedloops):
             
             score += reward
             s = score
-            if ts > 200:
+            if ts > 100:
                 new_theta = 6 * 2 * math.pi / 360
                 terminated = True if (observation[2] > new_theta or observation[2] < -new_theta) else terminated
                 

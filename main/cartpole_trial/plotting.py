@@ -41,7 +41,7 @@ for i in range(agents):
 
 data_std = {}    
 for i in range(agents):
-    fact = 0 if(i == 0 or i == 2) else 1
+    fact = 1 if(i == 0 or i == 2) else 1
     data_std[i] = np.std(np.transpose(data[i][:,0:episodes]), axis=1)
     plt.fill_between(range(sample-1), 
                      data_mean[i][:-1] + fact*data_std[i][:-1],
@@ -53,7 +53,7 @@ plt.legend(["Random agent", "Dyna-Q (N = 10)", "CL", "AIF (N = 1)", "DPEFE (N = 
 plt.title("Cart Pole - v1 (OpenAI Gym)")
 
 plt.xlabel("Episode number")
-#plt.ylim(-10, 10)
+plt.ylim(0, None)
 plt.xlim(0, episodes)
 plt.ylabel("Total score")
 plt.savefig('perf_1.png', dpi=500, bbox_inches='tight');

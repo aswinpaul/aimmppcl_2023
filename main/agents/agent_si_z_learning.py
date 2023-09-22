@@ -18,11 +18,8 @@ sys.path.append(module_path)
 # Importing the existing classical AI agent in pymdp to 
 # reuse inference and learning
 from pymdp.agent_si import si_agent
-from pymdp.utils import onehot
 from scipy.stats import dirichlet
 import numpy as np
-
-from pymdp.utils import norm_dist_obj_arr
 
 class si_agent_learnc(si_agent):
     """

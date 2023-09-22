@@ -66,13 +66,13 @@ D = obj_array_uniform(num_states)
 # %%
 
 # Trial
-n_trials = 400
+n_trials = 200
 time_horizon = 15000
 
 score_vec = np.zeros((n_trials))
 
     
-N = 5
+N = 20
 a = dpefe_agent_z(A = A,
                     B = B,
                     C = C,
@@ -107,7 +107,7 @@ for trial in range(n_trials):
         obs_list = state_to_obs(obs)
         o = [obs_list[0]*100 + obs_list[2]*10 + obs_list[3]]
         
-        if trial > 200:
+        if trial > 100:
             new_theta = 6 * 2 * math.pi / 360
             terminated = True if (obs[2] > new_theta or obs[2] < -new_theta) else terminated
 

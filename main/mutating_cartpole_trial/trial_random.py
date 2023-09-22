@@ -25,7 +25,7 @@ np.random.seed(10)
 
 # Trial
 m_trials = 100
-n_trials = 400
+n_trials = 200
 time_horizon = 15000
 
 score_vec = np.zeros((m_trials, n_trials))
@@ -56,7 +56,7 @@ for mt in range(m_trials):
             
             score += reward  
             
-            if trial > 200:
+            if trial > 100:
                 new_theta = 6 * 2 * math.pi / 360
                 terminated = True if (obs[2] > new_theta or obs[2] < -new_theta) else terminated
             

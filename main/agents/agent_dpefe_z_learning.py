@@ -17,7 +17,6 @@ sys.path.append(module_path)
 
 # importing the existing classical AI agent in pymdp to reuse inference and learning
 from pymdp.agent_dpefe import dpefe_agent
-from pymdp.utils import onehot
 from pymdp.maths import softmax
 import numpy as np
 from scipy.stats import dirichlet
@@ -120,7 +119,8 @@ class dpefe_agent_z(dpefe_agent):
                 self.update_A(obs_list)
                 
             # Planning
-            self.q_pi = softmax(-1*self.alpha*np.matmul(self.G[0,:,:], self.qs[0]))
+            tau_d = 0 if self.tau > self.N-2 else self.tau
+            self.q_pi = softmax(-1*self.alpha*np.matmul(self.G[tau_d,:,:], self.qs[0]))
             
             # Decision making         
             self.sample_action()

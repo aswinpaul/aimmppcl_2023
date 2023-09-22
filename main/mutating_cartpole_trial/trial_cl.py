@@ -12,6 +12,10 @@ np.random.seed(10)
 # This is needed agents are in a diff folder
 import os
 import sys
+
+mtrial = int(sys.argv[1])
+print(mtrial)
+
 from pathlib import Path
 import gymnasium
 import math
@@ -102,67 +106,69 @@ D = obj_array_uniform(num_states)
 
 # Trial
 m_trials = 100
-n_trials = 400
+n_trials = 200
 time_horizon = 15000
 
-score_vec = np.zeros((m_trials, n_trials))
-gamma_vec = np.zeros((m_trials, n_trials))
+score_vec = np.zeros((n_trials))
+gamma_vec = np.zeros((n_trials))
 frames = []
 
-for mt in range(m_trials):
-    print(mt)
     
-    N = 5
-    a = cl_agent(A = A,
-                 B = B,
-                 C = C,
-                 D = D,
-                 memory_horizon = N,
-                 action_precision = 1024,
-                 gamma_initial = 0.55)
-    
-    gamma_vec_list = []
-    
-    for trial in range(n_trials):
-        obs, info = env.reset(seed=mt)
-        a.tau = 0
-        score = 0
-        
-        
-        for t in range(time_horizon):
-            
-            obs_list = state_to_obs(obs)
-            action = a.step(obs_list, learning=False)
-            
-            obs, reward, terminated, truncated, info = env.step(int(action[0]))
-            score += reward
-            
-            if trial > 200:
-                new_theta = 6 * 2 * math.pi / 360
-                terminated = True if (obs[2] > new_theta or obs[2] < -new_theta) else terminated
-            
-            # Learning
-            if(terminated):
-                a.update_gamma(risk = 0.55)
-                a.update_CL(t) #state-action mapping
-                
-            if(score%100 == 0):
-                a.update_gamma(risk = -0.55)
-                a.update_CL(t) #state-action mapping
-                                            
-            #Checking for succesful episode
-            if terminated or truncated:
-                action  = a.step(obs_list, learning = False)
-                break
-            
+N = 5
+a = cl_agent(A = A,
+                B = B,
+                C = C,
+                D = D,
+                memory_horizon = N,
+                action_precision = 1,
+                gamma_initial = 0.55)
 
-            gamma_vec_list.append(np.mean(a.Gamma))
-            
-        score_vec[mt,trial] = score
-        gamma_vec[mt,trial] = np.array(gamma_vec_list).min()
-        
-with open('data_cl.npy', 'wb') as file:
+a.lr_pB = 1000
+a.lr_pA = 1
+a.lr_pD = 1
+
+for trial in range(n_trials):
+    obs, info = env.reset(seed=mtrial)
+    a.tau = 0
+    score = 0
+    gamma_vec_list = []
+
+    for t in range(time_horizon):
+
+        obs_list = state_to_obs(obs)
+        action = a.step(obs_list, learning = True)
+
+        obs, reward, terminated, truncated, info = env.step(int(action[0]))
+        score += reward
+
+        if trial > 100:
+            new_theta = 6 * 2 * math.pi / 360
+            terminated = True if (obs[2] > new_theta or obs[2] < -new_theta) else terminated
+
+        # Learning
+        if(terminated):
+            a.Gamma[:] = 0.55
+            a.update_CL(t) #state-action mapping
+
+        if(score%100 == 0):
+            a.update_gamma(risk = -0.2)
+            a.update_CL(t) #state-action mapping
+
+        #Checking for succesful episode
+        if terminated or truncated:
+            action  = a.step(obs_list, learning = True)
+            break
+
+
+        gamma_vec_list.append(np.mean(a.Gamma))
+
+    score_vec[trial] = score
+    gamma_vec[trial] = np.array(gamma_vec_list).min()
+
+file_name = 'data_cl/data_cl_' + str(mtrial) + '.npy'
+with open(file_name, 'wb') as file:
     np.save(file, score_vec)
-    
-with open('gamma_cl.npy', 'wb') as file:
+
+file_name = 'data_gamma_cl/gamma_cl_' + str(mtrial) + '.npy'
+with open(file_name, 'wb') as file:
     np.save(file, gamma_vec)

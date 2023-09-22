@@ -16,7 +16,7 @@ with open('gamma_cl.npy', 'rb') as file:
     
     
 agents = 1
-episodes = 400
+episodes = 200
 
 sample = np.shape(data[0][:,0:episodes][0])[0]
 
@@ -39,7 +39,7 @@ plt.legend(["Minimum of risk term (Gamma)"])
 plt.title("Risk term in CL method")
 
 plt.xlabel("Episode number")
-#plt.ylim(-10, 10)
+plt.ylim(0, None)
 plt.xlim(0, episodes)
 plt.ylabel("Total score")
 plt.savefig('gamma.png', dpi=500, bbox_inches='tight');

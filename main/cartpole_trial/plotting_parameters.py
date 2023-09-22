@@ -39,7 +39,7 @@ plt.legend(["Minimum of risk term (Gamma)"])
 plt.title("Risk term in CL method")
 
 plt.xlabel("Episode number")
-#plt.ylim(-10, 10)
+#plt.ylim(0, 1.01)
 plt.xlim(0, episodes)
 plt.ylabel("Total score")
 plt.savefig('gamma.png', dpi=500, bbox_inches='tight');
