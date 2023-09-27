@@ -11,22 +11,24 @@ import matplotlib.pyplot as plt
 
 data = {}
 
-with open('data_ql.npy', 'rb') as file:
-    data[0] = np.load(file)  
-    
-with open('data_dynaq_10.npy', 'rb') as file:
-    data[1] = np.load(file) 
-
 with open('data_random.npy', 'rb') as file:
-    data[2] = np.load(file)
-     
-with open('data_dpefe.npy', 'rb') as file:
-    data[3] = np.load(file)
-
-with open('data_si.npy', 'rb') as file:
-    data[4] = np.load(file)
+    data[0] = np.load(file)
     
-agents = 5
+with open('data_dpefe.npy', 'rb') as file:
+    data[1] = np.load(file)
+
+with open('data_cl.npy', 'rb') as file:
+    data[2] = np.load(file)
+
+# with open('data_ql.npy', 'rb') as file:
+#     data[0] = np.load(file)  
+    
+# with open('data_dynaq_10.npy', 'rb') as file:
+#     data[1] = np.load(file) 
+     
+
+    
+agents = 3
 episodes = 50
 
 sample = np.shape(data[0][:,0:episodes][0])[0]
@@ -38,19 +40,18 @@ for i in range(agents):
 
 data_std = {}    
 for i in range(agents):
-    fact = 0 if(i == 2) else 1
+    fact = 0 if(i == 0) else 1
     data_std[i] = np.std(np.transpose(data[i][:,0:episodes]), axis=1)
     plt.fill_between(range(sample-1), 
                      np.clip(data_mean[i][:-1] + fact*data_std[i][:-1], None, 9.99),
                      np.clip(data_mean[i][:-1] - fact*data_std[i][:-1], -14.9, None),
                      alpha=0.3)
 
-plt.legend(["Q-Learning agent", 
-            "Dyna-Q agent (memory replay=10)",
-            "Random agent",
-            "DPEFE agent (T = 80)",
-            "AIF agent (T = 1)"
-            ])
+plt.legend(["Random agent", "DPEFE agent (T = 80)", "CL agent (N = 50)"])
+
+# "Q-Learning agent"
+# "Dyna-Q agent (memory replay=10)"
+# "AIF agent (T = 1)"
 
 plt.title("Stochastic grid environment with changing goal (400 states)")
 

@@ -17,7 +17,7 @@ with open('data_random.npy', 'rb') as file:
 with open('data_dynaq_10.npy', 'rb') as file:
     data[1] = np.load(file)
 
-with open('data_cl.npy', 'rb') as file:
+with open('data_cl_5.npy', 'rb') as file:
     data[2] = np.load(file)
     
 with open('data_si.npy', 'rb') as file:
@@ -48,7 +48,7 @@ for i in range(agents):
                      data_mean[i][:-1] - fact*data_std[i][:-1],
                      alpha=0.3)
 
-plt.legend(["Random agent", "Dyna-Q (N = 10)", "CL", "AIF (N = 1)", "DPEFE (N = 5)", "DPEFE (N = 20)"])
+plt.legend(["Random agent", "Dyna-Q agent (memory replay = 10)", "CL method agent (T = 1)", "AIF agent (T = 1)", "DPEFE agent (T = 5)", "DPEFE agent (T = 20)"])
 
 plt.title("Cart Pole - v1 (OpenAI Gym)")
 

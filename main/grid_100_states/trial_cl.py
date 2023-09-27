@@ -68,7 +68,7 @@ D = obj_array_uniform(num_states)
 # %%
 
 # Trial
-m_trials = 100
+m_trials = 10
 n_trials = 50
 time_horizon = 15000
 

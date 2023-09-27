@@ -11,16 +11,16 @@ import matplotlib.pyplot as plt
 
 data = {}
 
-with open('data_random.npy', 'rb') as file:
+with open('data_cl_1.npy', 'rb') as file:
     data[0] = np.load(file)
     
-with open('data_dynaq_10.npy', 'rb') as file:
+with open('data_cl_2.npy', 'rb') as file:
     data[1] = np.load(file)
 
-with open('data_cl.npy', 'rb') as file:
+with open('data_cl_5.npy', 'rb') as file:
     data[2] = np.load(file)
 
-with open('data_dpefe_20.npy', 'rb') as file:
+with open('data_cl_10.npy', 'rb') as file:
     data[3] = np.load(file)
     
 agents = 4
@@ -42,7 +42,7 @@ for i in range(agents):
                      data_mean[i][:-1] - fact*data_std[i][:-1],
                      alpha=0.3)
 
-plt.legend(["Random agent", "Dyna-Q agent (memory replay = 10)", "CL method agent (T = 5)", "DPEFE agent (T = 20)"])
+plt.legend(["CL (T = 1)", "CL (T = 2)", "CL (T = 5)", "CL (T = 10)"])
 
 plt.title("Cart Pole - v1 (OpenAI Gym)")
 
@@ -50,4 +50,4 @@ plt.xlabel("Episode number")
 plt.ylim(0, None)
 plt.xlim(0, episodes)
 plt.ylabel("Total score")
-plt.savefig('perf_1.png', dpi=500, bbox_inches='tight');
+plt.savefig('cl_perf_1.png', dpi=500, bbox_inches='tight');

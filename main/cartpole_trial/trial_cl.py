@@ -12,6 +12,9 @@ np.random.seed(10)
 # This is needed agents are in a diff folder
 import os
 import sys
+
+horizon = int(sys.argv[1])
+
 from pathlib import Path
 import gymnasium
 
@@ -111,7 +114,7 @@ frames = []
 for mt in range(m_trials):
     print(mt)
     
-    N = 5
+    N = horizon
     a = cl_agent(A = A,
                  B = B,
                  C = C,
@@ -160,9 +163,12 @@ for mt in range(m_trials):
             
         score_vec[mt,trial] = score
         gamma_vec[mt,trial] = np.array(gamma_vec_list).min()
-        
-with open('data_cl.npy', 'wb') as file:
+
+
+file_name = 'data_cl_' + str(horizon) + '.npy'
+with open(file_name, 'wb') as file:
     np.save(file, score_vec)
-    
-with open('gamma_cl.npy', 'wb') as file:
+
+file_name = 'gamma_cl_' + str(horizon) + '.npy'
+with open(file_name, 'wb') as file:
     np.save(file, gamma_vec)

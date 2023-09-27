@@ -19,7 +19,7 @@ module_path = str(path.parent) + '/'
 sys.path.append(module_path)
 
 from grid_environments.grid_environment import grid_environment as Env 
-env = Env(path = '../grid_environments/grid10.txt', stochastic = True, end_state=37)
+env = Env(path = '../grid_environments/grid10.txt', stochastic = True, end_state = 37, p_rew = 10, n_rew = -1e-3)
 # Environment grid_env.grid_environment()
 
 num_states = env.numS
@@ -29,7 +29,7 @@ num_actions = env.numA
 # agent
 # agent
 from agents.agent_dpefe_z_learning import dpefe_agent_z
-from pymdp.utils import random_A_matrix, obj_array_zeros, random_B_matrix, obj_array_uniform
+from pymdp.utils import random_A_matrix, obj_array_zeros, random_B_matrix, obj_array_uniform, norm_dist_obj_arr
 
 # %%
 
@@ -55,7 +55,8 @@ num_modalities = len(num_obs)
 A = random_A_matrix(num_obs, num_states)
 A[0] = np.eye(s1_size)
 
-B = random_B_matrix(num_states, num_controls)
+B = random_B_matrix(num_states, num_controls)*0 + 1e-16
+B = norm_dist_obj_arr(B)
 
 goal_state = env.end_state
 C = obj_array_zeros(num_obs)
@@ -66,7 +67,7 @@ D = obj_array_uniform(num_states)
 # %%
 
 # Trial
-m_trials = 100
+m_trials = 10
 n_trials = 50
 time_horizon = 15000
 
@@ -81,35 +82,37 @@ for mt in range(m_trials):
                       C = C,
                       D = D,
                       planning_horizon = N,
-                      action_precision = 1,
+                      action_precision = 1024,
                       planning_precision = 1)
+    a.lr_pB = 1e5
     
     for trial in range(n_trials):
         
         if(trial%10 == 0):
             end_state = np.random.randint(0,env.numS)
             env = Env(path = '../grid_environments/grid10.txt', 
-                      stochastic = True, end_state=end_state)
+                      stochastic = True, end_state = end_state)
             
         goal_state = env.end_state
-        C = obj_array_zeros(num_obs)
-        C[0][goal_state] = 100
+        a.C = obj_array_zeros(num_obs)
+        a.C[0][goal_state] = 1
             
-        a.plan_using_dynprog()    
+        #a.plan_using_dynprog()    
         
-        obs, info = env.reset(seed=42)
+        obs, info = env.reset(seed = 42)
         a.tau = 0
         score = 0
         
         for t in range(time_horizon):
                 
-            action  = a.step([obs], learning=True)
+            action  = a.step([obs], learning = True)
+            # print(a.q_pi)
             obs, reward, terminated, truncated, info = env.step(int(action[0]))
-            score += reward  
+            score += reward
             
             #Checking for succesful episode
             if terminated or truncated:
-                action = a.step([obs], learning=True)
+                action = a.step([obs], learning = True)
                 break
 
         score_vec[mt,trial] = score
