@@ -41,5 +41,5 @@ plt.title("Risk term in CL method")
 plt.xlabel("Episode number")
 plt.ylim(0, None)
 plt.xlim(0, episodes)
-plt.ylabel("Total score")
-plt.savefig('gamma.png', dpi=500, bbox_inches='tight');
+plt.ylabel("Risk term in CL method (Gamma)")
+plt.savefig('gamma_mcp.png', dpi=500, bbox_inches='tight');

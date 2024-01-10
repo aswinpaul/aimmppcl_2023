@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 
 data = {}
 
-with open('gamma_cl.npy', 'rb') as file:
+with open('gamma_cl_5.npy', 'rb') as file:
     data[0] = np.load(file)
     
     
@@ -41,5 +41,5 @@ plt.title("Risk term in CL method")
 plt.xlabel("Episode number")
 #plt.ylim(0, 1.01)
 plt.xlim(0, episodes)
-plt.ylabel("Total score")
-plt.savefig('gamma.png', dpi=500, bbox_inches='tight');
+plt.ylabel("Risk term in CL method (Gamma)")
+plt.savefig('cp_gamma.png', dpi=500, bbox_inches='tight');
