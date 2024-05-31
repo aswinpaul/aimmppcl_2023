@@ -33,6 +33,7 @@ agents = 6
 episodes = 200
 
 sample = np.shape(data[0][:,0:episodes][0])[0]
+col = ['b', 'y','r','purple', 'brown', 'g']
 
 data_mean = {}  
 for i in range(agents):

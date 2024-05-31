@@ -27,11 +27,12 @@ agents = 4
 episodes = 200
 
 sample = np.shape(data[0][:,0:episodes][0])[0]
+col = ['b', 'black','r','g']
 
 data_mean = {}  
 for i in range(agents):
     data_mean[i] = np.mean(np.transpose(data[i][:,0:episodes]), axis=1)
-    plt.plot(range(sample-1),data_mean[i][:-1])
+    plt.plot(range(sample-1),data_mean[i][:-1], color = col[i])
 
 data_std = {}    
 for i in range(agents):
@@ -40,7 +41,7 @@ for i in range(agents):
     plt.fill_between(range(sample-1), 
                      data_mean[i][:-1] + fact*data_std[i][:-1],
                      data_mean[i][:-1] - fact*data_std[i][:-1],
-                     alpha=0.3)
+                     alpha=0.3, color = col[i])
 
 plt.legend(["Random agent", "Dyna-Q agent (memory replay = 10)", "CL method agent (T = 5)", "DPEFE agent (T = 20)"])
 
